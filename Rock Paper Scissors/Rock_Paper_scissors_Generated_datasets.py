@@ -99,5 +99,5 @@ def Threading_Process():
 Threading_Process()
 
 end = time.time()
-print(f'The final time taken to do calculation was {end-start} s')
+print('The final time taken to do calculation was {} s'.format(end - start))
 plot_dataset()
