@@ -5,17 +5,25 @@ import os
 import time
 from threading import Thread
 
+""" Initializing time taken to complete process"""
 start = time.time()
+
+""" Initializing lists & number of runs"""
 data = []
 threads = []
 c = ['rock', 'paper', 'scissors']
-n = 10000
+n = 10000  # Total number of runs
 
+""" Fetches current directory"""
 current_directory = os.getcwd()
+
+""" Fetches path to data, such for later use"""
 path_to_data = current_directory + '/data/Randomized/'
 
 
-def calculation_from_game():
+def calculation():
+    """ Rock paper scissors function. With the extra
+    generated data per run"""
     i = 0
     for x in range(len(c)):
         a = random.randint(1, 100000)
@@ -48,6 +56,9 @@ def calculation_from_game():
 
 
 def plot_dataset():
+    """ Function that loads up the dataset and plots
+    histograms on the randomized saved sets for n number of runs"""
+
     dataset0 = np.genfromtxt(path_to_data + str(object=n) +
                              "_" + str(object=c[0]) + "_data.csv", delimiter=', ')
     dataset1 = np.genfromtxt(path_to_data + str(object=n) +
@@ -55,6 +66,7 @@ def plot_dataset():
     dataset2 = np.genfromtxt(path_to_data + str(object=n) +
                              "_" + str(object=c[2]) + "_data.csv", delimiter=', ')
     dataset = [dataset0, dataset1, dataset2]
+
     for x in range(len(c)):
         loc = (0.25, 1.25, 2.25)
         bins = [0, 0.5, 1, 1.5, 2, 2.5]
@@ -71,10 +83,11 @@ def plot_dataset():
     plt.show()
 
 
-def Threads_for_dayz():
+def Threading_Process():
+    """ Threading and mapping function"""
     for i in range(os.cpu_count()):
         print('registering thread {}'.format(i))
-        threads.append(Thread(target=calculation_from_game))
+        threads.append(Thread(target=calculation))
 
     for thread in threads:
         thread.start()
@@ -83,9 +96,8 @@ def Threads_for_dayz():
         thread.join()
 
 
-#
-Threads_for_dayz()
-# calculation_from_game()
+Threading_Process()
+
 end = time.time()
 print(f'The final time taken to do calculation was {end-start} s')
 plot_dataset()
