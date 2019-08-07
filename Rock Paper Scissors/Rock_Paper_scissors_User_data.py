@@ -4,25 +4,32 @@ import numpy as np
 import os
 import time
 
+""" Initializing time taken to complete process"""
 start = time.time()
+
+""" Initializing lists & number of runs"""
 data = []
 threads = []
-n = 10
+n = 10  # Total number of runs
 
+""" Fetches current directory"""
 current_directory = os.getcwd()
+
+""" Fetches path to data, such for later use"""
 path_to_data = current_directory + '/data/User_Based'
 
 
 def calculation_from_game():
+    """ Rock paper scissors function. With the extra
+    generated data per run"""
     i = 0
     while i <= n:
-        # choice = input('Make your choice: ')
         choice = input('Make a choice: ')
         choice = choice.lower()
         choices = ['rock', 'paper', 'scissors']
-        # computer_choice = random.choice(choices)
+        computer_choice = random.choice(choices)
         computer_choice = choices[random.randint(0, len(choices) - 1)]
-        # print("The computer choice is: {}".format(computer_choice))
+        print("The computer choice is: {}".format(computer_choice))
         choice_dict = {'rock': 0, 'paper': 1, 'scissors': 2}
         choice_index = choice_dict.get(choice, 3)
         computer_index = choice_dict.get(computer_choice)
@@ -41,11 +48,14 @@ def calculation_from_game():
         # print(result)
         i += 1
         data.append(result_index)
+    # Saves datafile to then plot
     np.savetxt(path_to_data + '\ ' + str(object=n) +
                "_" + 'UserInput' + "_data.csv", data, delimiter=",")
 
 
 def plot_dataset():
+    """ Function that loads up the dataset and plots
+    histograms on the randomized saved sets for n number of runs"""
     dataset = np.genfromtxt(path_to_data + '\ ' + str(object=n) +
                             "_" + 'UserInput' + "_data.csv", delimiter=', ')
     loc = (0.25, 1.25, 2.25, 3.25)
@@ -67,4 +77,4 @@ calculation_from_game()
 plot_dataset()
 end = time.time()
 
-print(f'The final time taken to do calculation was {end-start} s')
+print('The final time taken to do calculation was {} s'.format(end - start))
